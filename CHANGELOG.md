@@ -1,3 +1,19 @@
+## 2.0.3
+
+* Android - Invalid column 
+
+## 2.0.2
+
+* Android 11 support 
+
+## 2.0.1
+
+* Reverted PR for image validation 
+
+## 2.0.0 
+
+* Merged all PRs(image validation to native, error if image was selected twice, newest android and ios support)
+
 ## 1.0.7 
 
 * Fixed issue with improper mime types for video

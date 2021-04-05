@@ -76,11 +76,13 @@ internal object FileUtils {
                     outputStream.write(source)
                 }
 
-                val pathId = ContentUris.parseId(imageUri)
-                val miniThumb = MediaStore.Images.Thumbnails.getThumbnail(
-                    contentResolver, pathId, MediaStore.Images.Thumbnails.MINI_KIND, null
-                )
-                storeThumbnail(contentResolver, miniThumb, pathId)
+                if (imageUri != null) {
+                    val pathId = ContentUris.parseId(imageUri)
+                    val miniThumb = MediaStore.Images.Thumbnails.getThumbnail(
+                            contentResolver, pathId, MediaStore.Images.Thumbnails.MINI_KIND, null
+                    )
+                    storeThumbnail(contentResolver, miniThumb, pathId)
+                }
             } else {
                 if (imageUri != null) {
                     contentResolver.delete(imageUri, null, null)
@@ -89,6 +91,8 @@ internal object FileUtils {
             }
         } catch (e: IOException) {
             contentResolver.delete(imageUri!!, null, null)
+            return false
+        } catch (t: Throwable) {
             return false
         }
 
@@ -165,10 +169,13 @@ internal object FileUtils {
         )
 
         var outputStream: OutputStream? = null
+        try{
         outputStream.use {
             if (thumbUri != null) {
                 outputStream = contentResolver.openOutputStream(thumbUri)
             }
+        }}catch (e: Exception){
+        //avoid crashing on devices that do not support thumb
         }
     }
 
